@@ -16,7 +16,7 @@ $ conda env create -f env,yml
 ```
 
 # Datasets
-If you use dataset prepared, download [RCV1-ids](https://drive.google.com/file/d/1kBKbH2sOjHZc-jJgayFO5FP8dK8tMrgk/view?usp=sharing) and put a unpacking folder into data/.
+If you use dataset prepared, download [RCV1-ids](https://drive.google.com/file/d/1kBKbH2sOjHZc-jJgayFO5FP8dK8tMrgk/view?usp=sharing) and put the folder that unzipped the 'id.zip' into data/.
 
 This is RCV1 dataset that raw text converted to ids by `BERT tokenizer`.
 Raw text means it didn`t normalize.
@@ -26,7 +26,8 @@ This dataset splitted 23,149 training sample set and 781,265 testing sample set 
 If you want to use original or another datasets, you should convert datasets to ids by `BERT tokenizer` and you should change format.
 ```
 - one document per line.
-- line must has 'tokenized ids' and 'label' that represented in one hot vector.
+- line must has 'tokenized ids' and 'label'.
+- label must be represented in one hot vector. 
 ```
 example
 ```
