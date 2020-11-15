@@ -24,8 +24,10 @@ Embedding`s Max length is 512 by BERT-base. So, used only 512 words from the beg
 This dataset splitted 23,149 training sample set and 781,265 testing sample set according to [RCV1: A New Benchmark Collection for Text Categorization Research](https://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf). 
 
 If you want to use original or another datasets, you should convert datasets to ids by `BERT tokenizer` and you should change format.
-・one document per line.
-・line must has tokenized ids, label that represented in one hot vector.
+```
+- one document per line.
+- line must has tokenized ids, label that represented in one hot vector.
+```
 And you should fix some parameter in run.py such as `classes`.
 
 example
