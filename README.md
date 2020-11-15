@@ -26,7 +26,7 @@ This dataset splitted 23,149 training sample set and 781,265 testing sample set 
 If you want to use original or another datasets, you should convert datasets to ids by `BERT tokenizer` and you should change format.
 ```
 - one document per line.
-- line must has tokenized ids, label that represented in one hot vector.
+- line must has 'tokenized ids', 'label' that represented in one hot vector.
 ```
 And you should fix some parameter in run.py such as `classes`.
 
