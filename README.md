@@ -28,12 +28,12 @@ If you want to use original or another datasets, you should convert datasets to 
 - one document per line.
 - line must has 'tokenized ids' and 'label' that represented in one hot vector.
 ```
-And you should fix some parameter in run.py such as `classes`.
-
 example
 ```
 [id1, id2, id3, ...]<TAB>[000100...]
 ```
+And you should fix some parameter in run.py such as `classes`.
+
 
 # BERT
 This program embeds word into 768-dimensional vector by BERT.
