@@ -1,6 +1,6 @@
 # CNN for Sentence Classification 
 Implementation of [Convolutional Neural Networks for Sentence Classification](https://www.aclweb.org/anthology/D14-1181/) using PyTorch.
-And using [Bidirectional Encoder Representations from Transformers](https://arxiv.org/abs/1810.04805) instead of word2vec for embedding word.
+And using [Bidirectional Encoder Representations from Transformers](https://arxiv.org/abs/1810.04805) instead of word2vec for embedding words.
 
 > Yoon Kim, Convolutional Neural Networks for Sentence Classification. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP), pp. 1746 - 1751, 2014.
 
@@ -12,18 +12,18 @@ And using [Bidirectional Encoder Representations from Transformers](https://arxi
 
 If you installed Anaconda, you can create a virtual enviroment from `env.yml`.
 ```
-$ conda env create -f env,yml
+$ conda env create -f env.yml
 ```
 
 # Datasets
-If you use dataset prepared, download [RCV1-ids](https://drive.google.com/file/d/1kBKbH2sOjHZc-jJgayFO5FP8dK8tMrgk/view?usp=sharing) and put the folder that unzipped the 'id.zip' into data/.
+If you use sample dataset, download [RCV1-ids](https://drive.google.com/file/d/1kBKbH2sOjHZc-jJgayFO5FP8dK8tMrgk/view?usp=sharing) and put the folder that unzipped the `id.zip` into data/.
 
-This is RCV1 dataset that raw text converted to ids by `BERT tokenizer`.
-Raw text means it didn`t normalize.
-Embedding`s Max length is 512 by BERT-base. So, used only 512 words from the beggining of each texts.
-This dataset splitted 23,149 training sample set and 781,265 testing sample set according to [RCV1: A New Benchmark Collection for Text Categorization Research](https://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf). 
+This is RCV1 dataset that raw texts converted to ids by `BERT tokenizer`.
+Raw texts means it didn`t normalize.
+Embedding\`s Max length is 512 by BERT-base. So, used only 512 words from the beggining of each texts.
+This dataset splitted 23,149 training sample and 781,265 testing sample according to [RCV1: A New Benchmark Collection for Text Categorization Research](https://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf). 
 
-If you want to use original or another datasets, you should convert datasets to ids by `BERT tokenizer` and you should change format.
+If you want to use original or another dataset, you should convert dataset to ids by `BERT tokenizer` and you should change format.
 ```
 - one document per line
 - line must has 'tokenized ids' and 'label'
@@ -33,15 +33,15 @@ example
 ```
 [id1, id2, id3, ...]<TAB>[000100...]
 ```
-And you should fix some parameter in run.py such as `classes`.
+And you should fix some parameters in run.py such as `classes` and `embedding_dim`.
 
 
 # BERT
-This program embeds word into 768-dimensional vector by BERT.
-This program use BERT of `base-uncased`
+This program uses BERT of `base-uncased`.
+So, embeds a word into a 768-dimensional vector by BERT.
 
 # Evalution Metrics
-This program use Precision@k, MicroF1 and MacroF1.
+This program uses Precision@k, MicroF1 and MacroF1.
 
 # How to run
 ## normal training and testing
