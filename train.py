@@ -35,6 +35,58 @@ class Model() :
             torch.cuda.manual_seed(params['seed'])
     
 
+    # making dataloader, model and etc... 
+    def build(self) :
+        # Dataloaderの定義
+        train_helper = BertHelper(self.params['train_path'])
+        self.train_loader = DataLoader(
+                                train_helper,        
+                                batch_size = self.params['batch_size'],
+                                shuffle = True
+                            )
+        val_helper = BertHelper(self.params['val_path'])
+        self.val_loader = DataLoader(
+                                val_helper,
+                                batch_size = self.params['batch_size'], 
+                                shuffle = True
+                            )
+        test_helper = BertHelper(self.params['test_path'])
+        self.test_loader = DataLoader(
+                                test_helper, 
+                                batch_size = self.params['batch_size'], 
+                                shuffle = True
+                            )
+
+        print('train sample:' + str(len(train_helper)) + ', val sample:' + str(len(val_helper)) + ', test sample:' + str(len(test_helper)))
+        print('finished data regularization!')
+        print('create model...', end = '')
+        
+        # CNNモデルの定義
+        self.model = CNN(self.params)
+        
+        if self.params['cuda'] :
+            self.model.cuda()
+
+        # 損失関数の定義
+        self.criterion = nn.BCEWithLogitsLoss()
+
+        # Optimizerの定義，及び重み減衰を適応させるパラメータの洗濯
+        no_decay = ['bias', 'LayerNorm.weight']
+        optimizer_parameters = [
+            {'params' : [p for i, p in self.model.named_parameters() if not any(j in i for j in no_decay)], 'weight_decay' : self.params['weight_decay']},
+            {'params' : [p for i, p in self.model.named_parameters() if any(j in i for j in no_decay)], 'weight_decay' : 0.0},
+            ]
+        self.optimizer = AdamW(optimizer_parameters, lr = self.params['learning_rate'])
+
+        # Schedulerの定義
+        num_training_steps = len(self.train_loader) * self.params['epoch']
+        num_warmup_steps = len(self.train_loader) * self.params['warmup_steps']
+        self.scheduler = get_linear_schedule_with_warmup(self.optimizer, num_warmup_steps, num_training_steps)
+
+        print('done!')
+        print('training start')
+
+
     # Parameter search function
     def tuning(self, trial) :
         # CNNにおけるフィルタ数
@@ -98,54 +150,7 @@ class Model() :
         }
         self.params.update(cnn_params)
 
-        # Dataloaderの定義
-        train_helper = BertHelper(self.params['train_path'])
-        self.train_loader = DataLoader(
-                                train_helper,        
-                                batch_size = self.params['batch_size'],
-                                shuffle = True
-                            )
-        val_helper = BertHelper(self.params['val_path'])
-        self.val_loader = DataLoader(
-                                val_helper,
-                                batch_size = self.params['batch_size'], 
-                                shuffle = True
-                            )
-        test_helper = BertHelper(self.params['test_path'])
-        self.test_loader = DataLoader(
-                                test_helper, 
-                                batch_size = self.params['batch_size'], 
-                                shuffle = True
-                            )
-
-        print('train sample:' + str(len(train_helper)) + ', val sample:' + str(len(val_helper)) + ', test sample:' + str(len(test_helper)))
-        print('finished data regularization!')
-        print('create model...', end = '')
-        
-        # CNNモデルの定義
-        self.model = CNN(self.params)
-        
-        if self.params['cuda'] :
-            self.model.cuda()
-
-        # 損失関数の定義
-        self.criterion = nn.BCEWithLogitsLoss()
-
-        # Optimizerの定義，及び重み減衰を適応させるパラメータの洗濯
-        no_decay = ['bias', 'LayerNorm.weight']
-        optimizer_parameters = [
-            {'params' : [p for i, p in self.model.named_parameters() if not any(j in i for j in no_decay)], 'weight_decay' : self.params['weight_decay']},
-            {'params' : [p for i, p in self.model.named_parameters() if any(j in i for j in no_decay)], 'weight_decay' : 0.0},
-            ]
-        self.optimizer = AdamW(optimizer_parameters, lr = self.params['learning_rate'])
-
-        # Schedulerの定義
-        num_training_steps = len(self.train_loader) * self.params['epoch']
-        num_warmup_steps = len(self.train_loader) * self.params['warmup_steps']
-        self.scheduler = get_linear_schedule_with_warmup(self.optimizer, num_warmup_steps, num_training_steps)
-
-        print('done!')
-        print('training start')
+        self.build()
 
         score = 0
 
@@ -159,54 +164,7 @@ class Model() :
 
     # normal train&test function
     def run(self) :
-        # Dataloaderの定義
-        train_helper = BertHelper(self.params['train_path'])
-        self.train_loader = DataLoader(
-                                train_helper,        
-                                batch_size = self.params['batch_size'],
-                                shuffle = True
-                            )
-        val_helper = BertHelper(self.params['val_path'])
-        self.val_loader = DataLoader(
-                                val_helper,
-                                batch_size = self.params['batch_size'], 
-                                shuffle = True
-                            )
-        test_helper = BertHelper(self.params['test_path'])
-        self.test_loader = DataLoader(
-                                test_helper, 
-                                batch_size = self.params['batch_size'], 
-                                shuffle = True
-                            )
-
-        print('train sample:' + str(len(train_helper)) + ', val sample:' + str(len(val_helper)) + ', test sample:' + str(len(test_helper)))
-        print('finished data regularization!')
-        print('create model...', end = '')
-
-        # CNNモデルの定義
-        self.model = CNN(self.params)
-
-        if self.params['cuda'] :
-            self.model.cuda()
-
-        # 損失関数の定義
-        self.criterion = nn.BCEWithLogitsLoss()
-
-        # Optimizerの定義，及び重み減衰を適応させるパラメータの洗濯
-        no_decay = ['bias', 'LayerNorm.weight']
-        optimizer_parameters = [
-           {'params' : [p for i, p in self.model.named_parameters() if not any(j in i for j in no_decay)], 'weight_decay' : self.params['weight_decay']},
-            {'params' : [p for i, p in self.model.named_parameters() if any(j in i for j in no_decay)], 'weight_decay' : 0.0},
-            ]
-        self.optimizer = AdamW(optimizer_parameters, lr = self.params['learning_rate'])
-
-        # Schedulerの定義
-        num_warmup_steps = len(self.train_loader) * self.params['warmup_steps']
-        num_training_steps = len(self.train_loader) * self.params['epoch']
-        self.scheduler = get_linear_schedule_with_warmup(self.optimizer, num_warmup_steps, num_training_steps)
-
-        print('done!')
-        print('training start')
+        self.build()
 
         min_score = 0
         best_epoch = 0
