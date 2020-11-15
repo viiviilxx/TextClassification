@@ -25,9 +25,9 @@ This dataset splitted 23,149 training sample set and 781,265 testing sample set 
 
 If you want to use original or another datasets, you should convert datasets to ids by `BERT tokenizer` and you should change format.
 ```
-- one document per line.
-- line must has 'tokenized ids' and 'label'.
-- label must be represented in one hot vector. 
+- one document per line
+- line must has 'tokenized ids' and 'label'
+- label must be represented in one hot vector
 ```
 example
 ```
