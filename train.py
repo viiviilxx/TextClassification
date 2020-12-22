@@ -219,7 +219,7 @@ class Model() :
                 self.model.train()
                 self.optimizer.zero_grad()
 
-                output = self.model(texts, labels)
+                output = self.model(texts)
                 
                 train_loss = self.criterion(output, labels)
                 train_loss.backward()

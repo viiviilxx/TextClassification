@@ -8,7 +8,7 @@ And using [Bidirectional Encoder Representations from Transformers](https://arxi
 - Python: 3.8.0 or higher
 - PyTorch: 1.6.0 or higher
 - Optuna: 2.0.0 or higher
-- Transformers from haggingface 3.0.2 or higher
+- Transformers from huggingface 3.0.2 or higher
 
 If you installed Anaconda, you can create a virtual enviroment from `env.yml`.
 ```
@@ -37,8 +37,10 @@ And you should fix some parameters in run.py such as `classes` and `embedding_di
 
 
 # BERT
-This program uses BERT of `base-uncased`.
+[huggingface](https://github.com/huggingface/transformers) publish some pre-trained models including BERT.
+This program uses `base-uncased` model that one of pre-trained models.
 So, embeds a word into a 768-dimensional vector by BERT.
+And this program turn off the fine-tuning of BERT.
 
 # Evalution Metrics
 This program uses Precision@k, MicroF1 and MacroF1.
@@ -64,3 +66,4 @@ This program is based on the following repositories.
 Thank you very much for their accomplishments.
 
 - [siddsax/XML-CNN](https://github.com/siddsax/XML-CNN) (MIT license)
+- [yu54ku/xml-cnn](https://github.com/yu54ku/xml-cnn) (MIT license)

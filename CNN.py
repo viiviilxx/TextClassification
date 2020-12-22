@@ -48,7 +48,7 @@ class CNN(torch.nn.Module):
         torch.nn.init.xavier_uniform_(self.linear2.weight)
 
 
-    def forward(self, texts, labels = None):
+    def forward(self, texts):
 
         texts = self.bert(texts)[0].detach_()
 
