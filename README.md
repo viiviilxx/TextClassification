@@ -19,8 +19,8 @@ $ conda env create -f env.yml
 If you use sample dataset, download [RCV1-ids](https://drive.google.com/file/d/1kBKbH2sOjHZc-jJgayFO5FP8dK8tMrgk/view?usp=sharing) and put the folder that unzipped the `id.zip` into data/.
 
 This is RCV1 dataset that raw texts converted to ids by `BERT tokenizer`.
-Raw texts means it didn\`t normalize.
-Embedding\`s Max length is 512 by BERT-base. So, used only 512 words from the beggining of each texts.
+Raw texts means it didn't normalize.
+Embedding's Max length is 512 by BERT-base. So, used only 512 words from the beggining of each texts.
 This dataset splitted 23,149 training sample and 781,265 testing sample according to [RCV1: A New Benchmark Collection for Text Categorization Research](https://www.jmlr.org/papers/volume5/lewis04a/lewis04a.pdf). 
 
 If you want to use original or another dataset, you should convert dataset to ids by `BERT tokenizer` and you should change format.
