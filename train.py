@@ -70,7 +70,7 @@ class Model() :
         # 損失関数の定義
         self.criterion = nn.BCEWithLogitsLoss()
 
-        # Optimizerの定義，及び重み減衰を適応させるパラメータの洗濯
+        # Optimizerの定義，及び重み減衰を適応させるパラメータの選択
         no_decay = ['bias', 'LayerNorm.weight']
         optimizer_parameters = [
             {'params' : [p for i, p in self.model.named_parameters() if not any(j in i for j in no_decay)], 'weight_decay' : self.params['weight_decay']},
@@ -166,7 +166,7 @@ class Model() :
     def run(self) :
         self.build()
 
-        min_score = 0
+        max_score = 0
         best_epoch = 0
         scores = []
         bad_counter = 0
@@ -180,8 +180,8 @@ class Model() :
                 
             torch.save(self.model.state_dict(), '{}.pkl'.format(epoch))
 
-            if scores[-1] > min_score :
-                min_score = scores[-1]
+            if scores[-1] > max_score :
+                max_score = scores[-1]
                 best_epoch = epoch
                 bad_counter = 0
             else:
@@ -193,15 +193,15 @@ class Model() :
             files = glob.glob('*.pkl')
             for file in files:
                 epoch_nb = int(file.split('.')[0])
-                if epoch_nb < best_epoch:
+                if epoch_nb < best_epoch :
                     os.remove(file)
 
         files = glob.glob('*.pkl')
         for file in files:
-            os.remove(file)
+            epoch_nb = int(file.split('.')[0])
+            if epoch_nb > best_epoch :
+                os.remove(file)
 
-        torch.save(self.model.state_dict(), '{}.pkl'.format(epoch))
-        
         print("Optimization Finished!")
         print('Loading {}th epoch'.format(best_epoch))
         self.model.load_state_dict(torch.load('{}.pkl'.format(best_epoch)))
